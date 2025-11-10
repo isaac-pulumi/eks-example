@@ -21,6 +21,8 @@ This project provisions an Amazon EKS cluster with a complete microservices appl
 
 ## Configuration
 
+The stack uses Pulumi ESC environment `aws-login/pulumi-dev-sandbox-env` for AWS credentials.
+
 Set the following configuration values:
 
 ```bash
@@ -34,15 +36,17 @@ pulumi config set letsencryptEmail your-email@example.com
 The project includes a CI/CD pipeline that:
 - Runs `pulumi preview` on pull requests
 - Runs `pulumi up` on pushes to main
+- Uses Pulumi ESC for AWS credentials (no need for AWS OIDC setup)
 
-### Required GitHub Secrets
+### Required GitHub Secret
 
-1. **PULUMI_ACCESS_TOKEN**: Your Pulumi access token
-   - Get it from: https://app.pulumi.com/account/tokens
+Only one secret is needed:
 
-2. **AWS_ROLE_ARN**: AWS IAM role ARN for OIDC authentication
-   - Recommended: Use OIDC instead of long-lived credentials
-   - See: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
+**PULUMI_ACCESS_TOKEN**: Your Pulumi access token
+- Get it from: https://app.pulumi.com/account/tokens
+- Set it in GitHub: https://github.com/isaac-pulumi/eks-example/settings/secrets/actions
+
+AWS credentials are automatically provided by the ESC environment `aws-login/pulumi-dev-sandbox-env`.
 
 ## Deployment
 
@@ -69,9 +73,10 @@ pulumi up
 
 ### Via GitHub Actions
 
-1. Push code to a branch
-2. Create a pull request to see preview
-3. Merge to main to deploy
+1. Set the `PULUMI_ACCESS_TOKEN` secret in GitHub
+2. Push code to a branch
+3. Create a pull request to see preview
+4. Merge to main to deploy
 
 ## Accessing the Application
 
@@ -79,7 +84,7 @@ After deployment:
 
 1. Get the load balancer hostname:
    ```bash
-   pulumi stack output ingressLoadBalancer
+   kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
    ```
 
 2. Point your domain DNS to the load balancer hostname (CNAME record)
@@ -141,5 +146,5 @@ pulumi destroy
 
 - `kubeconfig`: Kubernetes configuration for cluster access
 - `clusterName`: Name of the EKS cluster
-- `ingressLoadBalancer`: Load balancer hostname/IP
 - `appUrl`: Application URL (after DNS configuration)
+- `getLoadBalancerCommand`: Command to retrieve the load balancer hostname
