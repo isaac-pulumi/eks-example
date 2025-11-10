@@ -23,12 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: us-west-2
-
       - name: Pulumi Preview
         uses: pulumi/actions@v5
         with:
@@ -51,12 +45,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: us-west-2
 
       - name: Pulumi Update
         uses: pulumi/actions@v5
