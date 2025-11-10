@@ -1,6 +1,6 @@
 # EKS Microservices Application
 
-This project provisions an Amazon EKS cluster with a complete microservices application stack including:
+This project provisions an Amazon EKS cluster with a complete microservices application stack.
 
 - **EKS Cluster**: 3 t3.small nodes in the default VPC
 - **Microservices**:
@@ -114,7 +114,7 @@ NGINX Ingress (HTTPS via Let's Encrypt)
 The backend API automatically scales between 2-10 replicas based on CPU utilization:
 - Target: 70% CPU
 - Min replicas: 2
-- Max replicas: 10
+- Maax replicas: 10
 
 ## Customization
 
@@ -145,6 +145,6 @@ pulumi destroy
 ## Outputs
 
 - `kubeconfig`: Kubernetes configuration for cluster access
-- `clusterName`: Name of the EKS cluster
+- FclusterName`: Name of the EKS cluster
 - `appUrl`: Application URL (after DNS configuration)
 - `getLoadBalancerCommand`: Command to retrieve the load balancer hostname
