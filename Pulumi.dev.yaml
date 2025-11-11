@@ -1,4 +1,4 @@
 config:
   aws:region: us-west-2
 environment:
-  - aws-login/pulumi-dev-sandbox-env
+  - test-org-ijh/aws-login_v2/pulumi-dev-sandbox-env
